@@ -13,7 +13,7 @@ RUN \
     git
 
 # install go
-WORKDIR /root
+WORKDIR /usr/src
 RUN git clone https://go.googlesource.com/go
 WORKDIR ./go
 RUN git checkout go1.4.1
@@ -22,25 +22,26 @@ WORKDIR ./src
 RUN ./all.bash
 
 # set paths
-ENV PATH /root/go/bin:$PATH
-RUN mkdir -p /root/dev/go/src/github.com/zemirco/app
-ENV GOPATH /root/dev/go
-ENV PATH /root/dev/go/bin:$PATH
+ENV PATH /usr/src/go/bin:$PATH
+
+RUN mkdir -p /go/src/github.com/zemirco/app
+ENV GOPATH /go
+ENV PATH /go/bin:$PATH
 
 # check installation
 RUN go version
 
 # add go app
-ADD app.go /root/dev/go/src/github.com/zemirco/app/app.go
+ADD app.go /go/src/github.com/zemirco/app/app.go
 
 # Build the app command inside the container
 # (You may fetch or manage dependencies here,
 # either manually or with a tool like "godep".)
-WORKDIR /root/dev/go/src/github.com/zemirco/app
+WORKDIR /go/src/github.com/zemirco/app
 RUN go install
 
 # Run the outyet command by default when the container starts
-ENTRYPOINT /root/dev/go/bin/app
+ENTRYPOINT /go/bin/app
 
 # Document that the service listens on port 8080
 EXPOSE 8080
