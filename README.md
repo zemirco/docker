@@ -1,7 +1,7 @@
 
-# Install Docker
+##### Install Docker
 
-# Create image from `Dockerfile`
+##### Create image from `Dockerfile`
 
 ```
 docker build --tag zemirco/go .
